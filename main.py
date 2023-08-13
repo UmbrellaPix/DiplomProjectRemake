@@ -1,2 +1,5 @@
+from modules.memory.memory import User
+
 if __name__ == "__main__":
-    pass
+    user = User("user","1234","0","Alex","Zontov","Vladislavovich","IT")
+    user.save()
