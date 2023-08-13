@@ -1,13 +1,11 @@
 from sqlalchemy import create_engine, Column, Integer, String, LargeBinary, Boolean
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-import os
 
 # Создание подключения к базе данных
 _engine = create_engine('sqlite:///database.db')
 _Base = declarative_base()
 
-
+# Базовый абстрактный класс для таблиц
 class _BaseTable(_Base):
     __abstract__  = True
 
@@ -101,7 +99,7 @@ class Task(_BaseTable):
         self.description = description
         self.is_delete = is_delete
 
-
+# Создание таблиц если они не существуют
 _Base.metadata.create_all(bind = _engine)
 
 
