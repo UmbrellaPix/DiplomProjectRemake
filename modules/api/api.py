@@ -4,8 +4,6 @@ from flask import jsonify
 import os
 
 server = Flask(__name__)
-server.config['SECRET_KEY']='LongAndRandomSecretKey'
-server.run(host = '127.0.0.1', port=2000,debug=True)
 
 @server.errorhandler(404)
 def not_found(error):
@@ -25,3 +23,6 @@ for entry in os.scandir(path="./api"):
             print(f'Load: {entry.name} api')
         except Exception as err:
             print(f'ERROR API LOADE:{err}')
+
+server.config['SECRET_KEY']='LongAndRandomSecretKey'
+server.run(host = '127.0.0.1', port=2000,debug=True)
