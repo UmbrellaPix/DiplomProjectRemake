@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import make_response
 from flask import jsonify
+from flask_cors import CORS
 import os
 
 server = Flask(__name__)
+CORS(server, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @server.errorhandler(404)
 def not_found(error):
