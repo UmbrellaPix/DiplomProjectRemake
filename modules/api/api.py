@@ -3,9 +3,13 @@ from flask import make_response
 from flask import jsonify
 from flask_cors import CORS
 import os
+from modules.memory.functions import auth_token, create_session, auth_login
 
 server = Flask(__name__)
 CORS(server, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+server.create_session = create_session
+server.auth_token = auth_token
+server.auth_login = auth_login
 
 @server.errorhandler(404)
 def not_found(error):
