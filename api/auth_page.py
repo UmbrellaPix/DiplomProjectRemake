@@ -8,7 +8,6 @@ def auth_page(server):
     @server.route('/auth_page', methods=['POST'])
     def auth_page():
         data = request.get_json()
-
         if 'login' not in data or 'password' not in data:
             return make_response('Login and password are required', 401)
 
@@ -18,6 +17,6 @@ def auth_page(server):
 
         token = server.create_session(user_id)
         
-        response = make_response('Authorizated', 200)
+        response = make_response("", 200)
         response.headers.add('Authorization', token)
         return response

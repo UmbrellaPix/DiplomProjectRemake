@@ -5,7 +5,7 @@ from flask import Response
 # from modules.memory.functions import auth_token
 
 def auth_token(server):
-    @server.route('/auth_token', methods=['POST'])
+    @server.route('/auth_token', methods=['GET'])
     def auth_token():
         authorization_header = request.headers.get("Authorization")
         status_code = 200
