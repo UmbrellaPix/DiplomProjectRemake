@@ -1,19 +1,23 @@
-from sqlalchemy import create_engine, Column, Integer, String, LargeBinary, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, LargeBinary, Boolean, Uuid, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 # Создание подключения к базе данных
 _engine = create_engine('sqlite:///database.db')
 _Base = declarative_base()
+session = sessionmaker(bind=_engine)()
 
 # Базовый абстрактный класс для таблиц
 class _BaseTable(_Base):
     __abstract__  = True
 
+    def __init__(self):
+        self.session = session
+
     def save(self):
-        SessionMaker = Session()
-        SessionMaker.add(self)
-        SessionMaker.commit()
-        SessionMaker.close()
+        self.session.add(self)
+        self.session.commit()
+        self.session.close()
 
 
 class User(_BaseTable):
@@ -39,6 +43,7 @@ class User(_BaseTable):
                  department,
                  is_delete = False
                  ):
+        super().__init__()
         self.login = login
         self.password = password
         self.permission = permission
@@ -53,15 +58,15 @@ class Session(_BaseTable):
     __tablename__ = 'session'
 
     id = Column(Integer, primary_key=True)
-    uuid = Column(String)
-    user = Column(Integer)
-    deactivation = Column(String)
+    token = Column(Uuid)
+    user_id = Column(Integer)
+    deactivation_date = Column(DateTime)
 
-    def __init__(self, id, uuid, user, deactivation):
-        self.id = id
-        self.uuid = uuid
-        self.user = user
-        self.deactivation = deactivation
+    def __init__(self, token, user_id, deactivation_date):
+        super().__init__()
+        self.token = token
+        self.user_id = user_id
+        self.deactivation_date = deactivation_date
 
     
 class File(_BaseTable):
@@ -73,8 +78,8 @@ class File(_BaseTable):
     task_id = Column(Integer)
     is_delete = (Boolean)
 
-    def __init__(self, id, name, file, task_id, is_delete = False):
-        self.id = id
+    def __init__(self, name, file, task_id, is_delete = False):
+        super().__init__()
         self.name = name
         self.file = file
         self.task_id = task_id
@@ -92,7 +97,7 @@ class Task(_BaseTable):
     is_delete = Column(Boolean)
 
     def __init__(self, name, executor, deadline, description, is_delete = False):
-        self.id = id
+        super().__init__()
         self.name = name
         self.executor = executor
         self.deadline = deadline
@@ -101,7 +106,6 @@ class Task(_BaseTable):
 
 # Создание таблиц если они не существуют
 _Base.metadata.create_all(bind = _engine)
-
 
 
 
