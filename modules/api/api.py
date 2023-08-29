@@ -5,8 +5,11 @@ from flask_cors import CORS
 import os
 from modules.memory.functions import auth_token, create_session, auth_login
 
+from waitress import serve
+
 server = Flask(__name__)
 CORS(server, resources={r"/*": {"origins": "*", "supports_credentials": True}}, expose_headers=["Authorization"])
+
 server.create_session = create_session
 server.auth_token = auth_token
 server.auth_login = auth_login
@@ -31,4 +34,4 @@ for entry in os.scandir(path="./api"):
             print(f'ERROR API LOADE:{err}')
 
 server.config['SECRET_KEY']='LongAndRandomSecretKey'
-server.run(host = '127.0.0.1', port=2000,debug=True)
+serve(app = server, host = '192.168.0.10', port=2000, threads=1)
