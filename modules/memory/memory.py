@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, LargeBinary, Boolean, Uuid, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, LargeBinary, Boolean, Uuid, DateTime, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -52,6 +52,17 @@ class User(_BaseTable):
         self.patronymic = patronymic
         self.department = department
         self.is_delete = is_delete
+
+class UserImage(_BaseTable):
+    __tablename__ = 'user_image'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    image = Column(BLOB)
+
+    def __init__(self):
+        super().__init__(user_id, image)
+        self.user_id = user_id
+        self.image = image
 
 
 class Session(_BaseTable):

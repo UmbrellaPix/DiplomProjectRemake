@@ -1,4 +1,4 @@
-from memory import session, Session, User
+from modules.memory.memory import session, Session, User
 from datetime import datetime, timedelta
 import uuid
 
@@ -41,6 +41,5 @@ def auth_login(login:str, password:str) -> int:
         return 0
     
 
-print(auth_token('bc725e28-86ab-47d1-9431-e3382915c365'))
 
 
