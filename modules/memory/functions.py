@@ -1,5 +1,5 @@
-from modules.memory.memory import session, Session, User
-from datetime import datetime
+from memory import session, Session, User
+from datetime import datetime, timedelta
 import uuid
 
 # Проверка токена сессии
@@ -22,7 +22,7 @@ def auth_token(token:str) -> bool:
 
 # Создание сессии
 def create_session(user_id: int) -> str:
-    current_datetime = datetime.now()
+    current_datetime = datetime.now() + timedelta(days=1)
     uuid_token = uuid.uuid4()
 
     session = Session(token = uuid_token, user_id=user_id, deactivation_date=current_datetime)
@@ -39,5 +39,8 @@ def auth_login(login:str, password:str) -> int:
         return result.id
     else:
         return 0
+    
+
+print(auth_token('bc725e28-86ab-47d1-9431-e3382915c365'))
 
 
