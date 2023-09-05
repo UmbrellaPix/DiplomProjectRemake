@@ -14,8 +14,7 @@ def auth_token(server):
         if authorization_header:
             token = authorization_header.split(" ")[-1]
             auth = server.auth_token(token)
-
-            if auth != False:
+            if auth:
                 response_headers = {"Authorization": "true"}
             else:
                 response_headers = {"Authorization": "false"}

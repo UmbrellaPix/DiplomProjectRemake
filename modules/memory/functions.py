@@ -6,12 +6,12 @@ import uuid
 def auth_token(token:str) -> bool:
     
     current_datetime = datetime.now()
-    current_datetime_str = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    current_datetime_str = current_datetime.strftime('%Y-%m-%d %H:%M:%S.%f')
     try:
         token = uuid.UUID(token)
         result =  session.query(Session).filter(
-            Session.token == token and
-            Session.deactivation_date > current_datetime_str
+            (Session.token == token),
+            (Session.deactivation_date > current_datetime_str)
         ).first()
         if result != None:
             return True
